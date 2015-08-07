@@ -1,0 +1,11 @@
+{
+  "name": "react-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "webpack": "1.11.0"
+  }
+}
