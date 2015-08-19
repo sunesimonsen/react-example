@@ -1,4 +1,5 @@
 var React = require('react');
+var styles = require('./Clock.css');
 
 module.exports = React.createClass({
     displayName: 'Clock',
@@ -15,6 +16,6 @@ module.exports = React.createClass({
         this.setState({ date: new Date() });
     },
     render: function(){
-        return <h2>{this.state.date.toString()}</h2>;
+        return <h2 className={styles.alert}>{this.state.date.toString()}</h2>;
     }
 });

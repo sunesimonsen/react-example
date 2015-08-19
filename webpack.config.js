@@ -1,3 +1,5 @@
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
+
 module.exports = {
     context: __dirname + "/app",
     entry: "./main.jsx",
@@ -11,14 +13,19 @@ module.exports = {
                 test: /\.jsx?$/,
                 exclude: /(node_modules|bower_components)/,
                 loader: 'babel'
+            },
+            {
+                test: /\.css$/,
+                loader: ExtractTextPlugin.extract(
+                    'style-loader',
+                    'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader'
+                )
             }
-            // {
-            //     //tell webpack to use jsx-loader for all *.jsx files
-            //     test: /\.jsx$/,
-            //     loader: 'jsx-loader?insertPragma=React.DOM&harmony'
-            // }
         ]
     },
+    postcss: [
+        require('autoprefixer-core')
+    ],
     externals: {
         //don't bundle the 'react' npm package with our bundle.js
         //but get it from a global 'React' variable
@@ -26,5 +33,8 @@ module.exports = {
     },
     resolve: {
         extensions: ['', '.js', '.jsx']
-    }
+    },
+    plugins: [
+        new ExtractTextPlugin('style.css', { allChunks: true })
+    ]
 };
