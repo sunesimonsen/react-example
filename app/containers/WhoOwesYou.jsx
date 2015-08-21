@@ -1,17 +1,20 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import ParticipantList from '../components/ParticipantList';
+import { ADD_PARTICIPANT } from '../constants/ActionTypes';
+import * as ParticipantsActions from '../actions/participants';
 
 class WhoOwesYou extends Component {
     addParticipant(name) {
-        const { dispatch } = this.props;
-        dispatch({ type: 'addParticipant', name: name });
     }
 
     render() {
-        const { participants } = this.props;
+        const { participants, dispatch } = this.props;
+        const actions = bindActionCreators(ParticipantsActions, dispatch);
         return (
-            <ParticipantList addParticipant={this.addParticipant.bind(this)}
+            <ParticipantList addParticipant={actions.addParticipant}
                              participants={participants} />
         );
     }
