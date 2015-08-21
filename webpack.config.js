@@ -4,7 +4,7 @@ module.exports = {
     context: __dirname + "/app",
     entry: [
         "webpack/hot/dev-server",
-        "./main.jsx"
+        "./index.jsx"
     ],
     output: {
         path: __dirname + "/dist",
