@@ -1,10 +1,10 @@
 import { handleActions } from 'redux-actions';
 
 export default handleActions({
-    LOAD_USERS: (state, action) => {
+    LOADING_USERS: (state, action) => {
         return { loading: true, list: state.list };
     },
-    RECIEVED_USERS: {
+    LOAD_USERS: {
         next(state, action) {
             return { loading: false, list: action.payload };
         },

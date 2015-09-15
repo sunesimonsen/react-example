@@ -1,12 +1,12 @@
 import { createAction } from 'redux-actions';
 
-export function loadUsers() {
-    return createAction('LOAD_USERS')();
+export function loadingUsers() {
+    return createAction('LOADING_USERS')();
 }
 
-export function recievedUsers() {
+export function loadUsers() {
     const request = fetch('http://jsonplaceholder.typicode.com/users').then(response => {
         return response.json();
     });
-    return createAction('RECIEVED_USERS')(request);
+    return createAction('LOAD_USERS')(request);
 }

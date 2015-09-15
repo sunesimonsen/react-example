@@ -1,12 +1,12 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import { loadUsers, recievedUsers } from '../actions/users';
+import { loadingUsers, loadUsers } from '../actions/users';
 
 export default class UserList extends Component {
     componentDidMount() {
         const { dispatch } = this.props;
+        dispatch(loadingUsers());
         dispatch(loadUsers());
-        dispatch(recievedUsers());
     }
 
     render() {
