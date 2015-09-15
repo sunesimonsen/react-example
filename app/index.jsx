@@ -1,40 +1,38 @@
 import React, { Component } from 'react';
-import Application from './containers/Application';
-import Router, { DefaultRoute, Route, Link, RouteHandler } from 'react-router';
-import { createStore } from 'redux';
+import { Router, Route, Link, IndexRoute } from 'react-router';
+import { createStore, applyMiddleware } from 'redux';
 import rootReducer from './reducers';
 import { Provider } from 'react-redux';
+import UserList from './components/UserList';
+import reduxPromise from 'redux-promise';
 
-const store = createStore(rootReducer);
+const createStoreWithMiddleware = applyMiddleware(reduxPromise)(createStore);
+const store = createStoreWithMiddleware(rootReducer);
 
-class RootRoute  extends Component {
+class RootRoute extends Component {
     render() {
         return (
             <div>
-                <Link to="app">app</Link> | <Link to="foo">foo</Link>
-                <Provider store={store}>
-                    {() => <RouteHandler/> }
-                </Provider>
+                {this.props.children}
             </div>
         );
     }
 }
 
-class FooRoute  extends Component {
+class Routes extends Component {
     render() {
         return (
-            <h1>Foo</h1>
+            <Router>
+                <Route path="/" component={RootRoute}>
+                    <IndexRoute component={UserList}/>
+                </Route>
+            </Router>
         );
     }
 }
 
-var routes = (
-    <Route name="app" path="/" handler={RootRoute}>
-        <Route name="foo" handler={FooRoute}/>
-        <DefaultRoute handler={Application}/>
-    </Route>
-);
-
-Router.run(routes, Router.HistoryLocation, function (Handler) {
-  React.render(<Handler/>, document.getElementById('root'));
-});
+React.render((
+    <Provider store={store}>
+        {() => <Routes/>}
+    </Provider>
+), document.getElementById('root'));
