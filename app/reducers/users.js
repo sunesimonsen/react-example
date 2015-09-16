@@ -1,15 +1,16 @@
 import { handleActions } from 'redux-actions';
 
 export default handleActions({
-    LOADING_USERS: (state, action) => {
-        return { loading: true, list: state.list };
-    },
     LOAD_USERS: {
         next(state, action) {
-            return { loading: false, list: action.payload };
+            if (action.meta.status === 'init') {
+                return { ...state, status: 'loading' };
+            } else {
+                return { ...state, status: 'loaded', list: action.payload };
+            }
         },
         throw(state, action) {
-            return state;
+            return { ...state, status: 'failed' };
         }
     }
-}, { loading: true, list: [] });
+}, { status: 'not-loaded', list: [] });
