@@ -8,10 +8,10 @@ export default class UserList extends Component {
         return (
             <div>
                 <p>
-                {users.status !== 'loaded' ? 'Loading...' : null }
+                {users.get('status') !== 'loaded' ? 'Loading...' : null }
                 </p>
                 <ul>
-                    {users.list.map(user =>
+                    {users.get('list').map(user =>
                         <li key={user.id}><UserItem user={user}/></li>
                      )}
                 </ul>
