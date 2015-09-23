@@ -1,42 +1,49 @@
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var webpack = require('webpack');
+var path = require('path');
 
 module.exports = {
     context: __dirname + "/app",
     entry: [
+        'webpack-dev-server/client?http://localhost:4000', // WebpackDevServer host and port
+        'webpack/hot/only-dev-server', // "only" prevents reload on syntax errors
         "./index.jsx"
     ],
     output: {
-        path: __dirname + "/dist",
-        filename: "bundle.js"
+        path: path.join(__dirname, 'dist'),
+        filename: 'bundle.js',
+        publicPath: '/static/'
     },
     module: {
         loaders: [
             {
                 test: /\.jsx?$/,
-                exclude: /(node_modules|bower_components)/,
-                loader: 'babel'
+                loaders: ['react-hot', 'babel'],
+                exclude: /(node_modules|bower_components)/
             },
             {
                 test: /\.less$/,
-                loader: ExtractTextPlugin.extract(
+                loaders: [
                     'style-loader',
-                    'css-loader?modules&importLoaders=1&localIdentName=[name]--[local]-[hash:base64:5]!less-loader!postcss-loader'
-                )
+                    'css-loader?modules&importLoaders=1&localIdentName=[name]--[local]-[hash:base64:5]',
+                    'less-loader',
+                    'postcss-loader'
+                ]
+                // loader: ExtractTextPlugin.extract(
+                //     'style-loader',
+                //     'css-loader?modules&importLoaders=1&localIdentName=[name]--[local]-[hash:base64:5]!less-loader!postcss-loader'
+                // )
             }
         ]
     },
     postcss: [
         require('autoprefixer-core')
     ],
-    externals: {
-        //don't bundle the 'react' npm package with our bundle.js
-        //but get it from a global 'React' variable
-        'react': 'React'
-    },
     resolve: {
         extensions: ['', '.js', '.jsx']
     },
     plugins: [
-        new ExtractTextPlugin('style.css', { allChunks: true })
+        new webpack.HotModuleReplacementPlugin(),
+        // new ExtractTextPlugin('style.css', { allChunks: true })
     ]
 };

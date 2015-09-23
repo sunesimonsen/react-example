@@ -1,21 +1,27 @@
 import React, { Component } from 'react';
 import { Router, Route, Link, IndexRoute } from 'react-router';
-import { createStore, applyMiddleware } from 'redux';
+import { compose, createStore, applyMiddleware } from 'redux';
 import rootReducer from './reducers';
 import { Provider } from 'react-redux';
 import UserList from './components/UserList';
 import User from './components/User';
 import reduxPromise from 'redux-promise';
 import asyncMiddleware from './redux-async';
-import { loadUsers } from './actions/users';
+import { loadUsersAction } from './actions/users';
 
-const createStoreWithMiddleware = applyMiddleware(asyncMiddleware)(createStore);
-const store = createStoreWithMiddleware(rootReducer);
+import { devTools, persistState } from 'redux-devtools';
+import { DevTools, DebugPanel, LogMonitor } from 'redux-devtools/lib/react';
 
+const store = compose(
+    applyMiddleware(asyncMiddleware),
+    devTools(),
+    // Lets you write ?debug_session=<name> in address bar to persist debug sessions
+    persistState(window.location.href.match(/[?&]debug_session=([^&]+)\b/))
+)(createStore)(rootReducer);
 
 class RootRoute extends Component {
     componentDidMount() {
-        store.dispatch(loadUsers());
+        store.dispatch(loadUsersAction());
     }
 
     render() {
@@ -41,7 +47,12 @@ class Routes extends Component {
 }
 
 React.render((
+    <div>
     <Provider store={store}>
-        {() => <Routes/>}
+    {() => <Routes/>}
     </Provider>
+    <DebugPanel top right bottom>
+        <DevTools store={store} monitor={LogMonitor} />
+    </DebugPanel>
+    </div>
 ), document.getElementById('root'));
