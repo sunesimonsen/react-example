@@ -1,4 +1,3 @@
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var webpack = require('webpack');
 var path = require('path');
 
@@ -29,10 +28,6 @@ module.exports = {
                     'less-loader',
                     'postcss-loader'
                 ]
-                // loader: ExtractTextPlugin.extract(
-                //     'style-loader',
-                //     'css-loader?modules&importLoaders=1&localIdentName=[name]--[local]-[hash:base64:5]!less-loader!postcss-loader'
-                // )
             }
         ]
     },
@@ -44,6 +39,5 @@ module.exports = {
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
-        // new ExtractTextPlugin('style.css', { allChunks: true })
     ]
 };
