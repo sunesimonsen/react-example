@@ -7,8 +7,8 @@ export default class UserItem extends Component {
     render () {
         const { user } = this.props;
         return (
-            <li styleName="user-item" key={user.get('id')}>
-                <Link to={`/users/${user.get('id')}`}>{user.get('name')}</Link>
+            <li styleName="user-item" key={user.id}>
+                <Link to={`/users/${user.id}`}>{user.name}</Link>
             </li>
         );
     }

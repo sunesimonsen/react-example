@@ -1,5 +1,13 @@
 import { handleActions } from 'redux-actions';
-import { fromJS, mergeDeep, List } from 'immutable';
+import { fromJS, mergeDeep, List, Record } from 'immutable';
+
+const UserRecord = Record({
+    id: null,
+    name: '',
+    email: '',
+    website: '',
+    phone: ''
+});
 
 export default handleActions({
     LOAD_USERS: {
@@ -7,7 +15,7 @@ export default handleActions({
             if (action.meta.status === 'init') {
                 return state.mergeDeep({ status: 'loading' });
             } else {
-                return state.mergeDeep({ status: 'loaded', list: fromJS(action.payload) });
+                return state.mergeDeep({ status: 'loaded', list: List(action.payload.map(user => new UserRecord(user))) });
             }
         },
         throw(state, action) {

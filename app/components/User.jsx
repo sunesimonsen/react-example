@@ -20,24 +20,29 @@ const User = React.createClass({
                     history.pushState(null, '/')
                 }
 
+                function back() {
+                    history.goBack();
+                }
+
                 content = (
                     <div>
-                        <h1>{user.get('name')}</h1>
+                        <h1>{user.name}</h1>
                         <table>
                             <tr>
                                 <td>Email:</td>
-                                <td>{user.get('email')}</td>
+                                <td>{user.email}</td>
                             </tr>
                             <tr>
                                 <td>Phone:</td>
-                                <td>{user.get('phone')}</td>
+                                <td>{user.phone}</td>
                             </tr>
                             <tr>
                                 <td>Website:</td>
-                                <td>{user.get('website')}</td>
+                                <td>{user.website}</td>
                             </tr>
                         </table>
                         <button onClick={deleteUser}>Delete</button>
+                        <button onClick={back}>Back</button>
                     </div>
                 );
             } else {
@@ -58,7 +63,7 @@ const select = createSelector(
         return {
             status: users.get('status'),
             usersById: users.get('list').reduce((result, user) => {
-                return result.set(user.get('id'), user)
+                return result.set(user.id, user)
             }, Map())
         };
     }
