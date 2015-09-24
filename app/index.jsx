@@ -12,12 +12,20 @@ import { loadUsersAction } from './actions/users';
 import { devTools, persistState } from 'redux-devtools';
 import { DevTools, DebugPanel, LogMonitor } from 'redux-devtools/lib/react';
 
-const store = compose(
+const finalCreateStore = compose(
     applyMiddleware(asyncMiddleware),
     devTools(),
     // Lets you write ?debug_session=<name> in address bar to persist debug sessions
     persistState(window.location.href.match(/[?&]debug_session=([^&]+)\b/))
-)(createStore)(rootReducer);
+)(createStore);
+
+const store = finalCreateStore(rootReducer);
+
+if (module.hot) {
+  module.hot.accept('./reducers', () =>
+    store.replaceReducer(require('./reducers'))
+  );
+}
 
 class RootRoute extends Component {
     componentDidMount() {
