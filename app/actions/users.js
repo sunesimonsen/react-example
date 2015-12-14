@@ -8,5 +8,5 @@ export function loadUsersAction() {
 }
 
 export function deleteUserAction(user) {
-    return createAction('DELETE_USER')(user.get('id'));
+    return createAction('DELETE_USER')(user.id);
 }

@@ -24,6 +24,6 @@ export default handleActions({
     },
     DELETE_USER: function (state, action) {
         var id = action.payload;
-        return state.update('list', users => users.filter(user => user.get('id') !== id));
+        return state.update('list', users => users.filter(user => user.id !== id));
     }
 }, fromJS({ status: 'not-loaded', list: List() }));
